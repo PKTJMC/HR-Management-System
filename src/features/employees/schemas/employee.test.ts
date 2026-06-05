@@ -1,14 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { employeeCreateSchema } from "./employee";
 
+const seededDepartmentId = "11111111-1111-4111-8111-111111111111";
+const seededJobTitleId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+
 const validPayload = {
   employeeCode: "EMP-001",
   legalFirstName: "Big",
   legalLastName: "Boss",
   preferredName: "Big",
   companyEmail: "big@company.com",
-  departmentId: "11111111-1111-4111-8111-111111111111",
-  jobTitleId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  departmentId: seededDepartmentId,
+  jobTitleId: seededJobTitleId,
   employmentType: "full_time",
   joinDate: "2026-06-06",
   employmentStatus: "active",
