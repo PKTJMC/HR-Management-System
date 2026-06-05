@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
+import { describe, expect, it } from "vitest";
 import RootLayout from "./layout";
 
 describe("RootLayout", () => {
@@ -7,7 +8,10 @@ describe("RootLayout", () => {
     const layout = RootLayout({
       children: <div>HRMS App</div>,
     }) as ReactElement<{
-      children: ReactElement<{ children: ReactElement }>;
+      children: ReactElement<{
+        children: ReactNode;
+        className: string;
+      }>;
       lang: string;
     }>;
 
