@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #f4f1ea;
+  --color-fg: #1e1a16;
+  --color-panel: #fffdf8;
+  --color-border: #d8cfbf;
+  --color-accent: #0f766e;
+  --color-accent-strong: #115e59;
+}
+
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+}
