@@ -4,7 +4,7 @@ create table departments (
   id uuid primary key default gen_random_uuid(),
   name text not null unique,
   code text not null unique,
-  status text not null default 'active',
+  status text not null default 'active' check (status in ('active', 'inactive')),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -13,7 +13,7 @@ create table job_titles (
   id uuid primary key default gen_random_uuid(),
   name text not null unique,
   code text not null unique,
-  status text not null default 'active',
+  status text not null default 'active' check (status in ('active', 'inactive')),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -29,9 +29,9 @@ create table employees (
   phone text,
   department_id uuid not null references departments(id),
   job_title_id uuid not null references job_titles(id),
-  employment_type text not null,
+  employment_type text not null check (employment_type in ('full_time', 'part_time', 'contract', 'intern')),
   join_date date not null,
-  employment_status text not null,
+  employment_status text not null check (employment_status in ('active', 'probation', 'on_leave', 'resigned', 'terminated')),
   address text,
   emergency_contact_name text,
   emergency_contact_phone text,
