@@ -1,13 +1,12 @@
-import type { EmployeeRow } from "./components/employee-table";
+import type {
+  EmployeeDetail,
+  EmployeeDirectoryFilters,
+  EmployeeRow,
+} from "./types";
 
-export type EmployeeDetail = EmployeeRow & {
-  email: string;
-  location: string;
-  manager: string;
-  startDate: string;
-};
-
-export async function listEmployees(): Promise<EmployeeRow[]> {
+export async function listEmployees(
+  _filters: EmployeeDirectoryFilters,
+): Promise<EmployeeRow[]> {
   return [];
 }
 

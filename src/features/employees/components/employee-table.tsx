@@ -1,10 +1,5 @@
-export type EmployeeRow = {
-  id: string;
-  name: string;
-  department: string;
-  title: string;
-  status: string;
-};
+import Link from "next/link";
+import type { EmployeeRow } from "../types";
 
 export function EmployeeTable({ rows }: { rows: EmployeeRow[] }) {
   return (
@@ -32,7 +27,12 @@ export function EmployeeTable({ rows }: { rows: EmployeeRow[] }) {
                 className="border-b border-[--color-border] last:border-b-0"
               >
                 <td className="px-4 py-3 font-medium text-[--color-fg]">
-                  {row.name}
+                  <Link
+                    href={`/hr/employees/${row.id}`}
+                    className="text-[--color-accent-strong] underline-offset-4 transition hover:underline"
+                  >
+                    {row.name}
+                  </Link>
                 </td>
                 <td className="px-4 py-3 text-stone-700">{row.department}</td>
                 <td className="px-4 py-3 text-stone-700">{row.title}</td>
