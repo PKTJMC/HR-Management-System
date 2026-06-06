@@ -14,6 +14,10 @@ export const MOCK_ROLE_SESSION_COOKIE = "hrms-role";
  */
 export type MockRoleSession = {
   role: AppRole;
+  userId: string;
+  employeeId: string | null;
+  legalFirstName: string;
+  legalLastName: string;
 };
 
 type RequestCookieStore = {
@@ -24,10 +28,52 @@ type RequestWithCookies = {
   cookies: RequestCookieStore;
 };
 
+const mockSessionIdentityMap: Record<AppRole, Omit<MockRoleSession, "role">> = {
+  hr: {
+    userId: "hr-user",
+    employeeId: "hr-staff",
+    legalFirstName: "HR",
+    legalLastName: "Admin",
+  },
+  management: {
+    userId: "management-user",
+    employeeId: "management-staff",
+    legalFirstName: "Management",
+    legalLastName: "Lead",
+  },
+  employee: {
+    userId: "employee-self",
+    employeeId: "employee-self",
+    legalFirstName: "Big",
+    legalLastName: "Boss",
+  },
+};
+
 export function getSessionRoleFromCookieValue(
   cookieValue: string | null | undefined,
 ): AppRole | null {
   return isAppRole(cookieValue) ? cookieValue : null;
+}
+
+/**
+ * Temporary scaffold identity derived entirely on the server side.
+ *
+ * This closes obvious client-side hidden-input spoofing paths until real auth
+ * is available. Do not treat these ids as production-safe identity claims.
+ */
+export function getMockRoleSessionFromCookieValue(
+  cookieValue: string | null | undefined,
+): MockRoleSession | null {
+  const role = getSessionRoleFromCookieValue(cookieValue);
+
+  if (!role) {
+    return null;
+  }
+
+  return {
+    role,
+    ...mockSessionIdentityMap[role],
+  };
 }
 
 /**
@@ -39,15 +85,9 @@ export function getSessionRoleFromCookieValue(
 export function getMockRoleSessionFromRequest(
   request: RequestWithCookies,
 ): MockRoleSession | null {
-  const role = getSessionRoleFromCookieValue(
+  return getMockRoleSessionFromCookieValue(
     request.cookies.get(MOCK_ROLE_SESSION_COOKIE)?.value,
   );
-
-  if (!role) {
-    return null;
-  }
-
-  return { role };
 }
 
 export function getMockSessionRoleFromRequest(

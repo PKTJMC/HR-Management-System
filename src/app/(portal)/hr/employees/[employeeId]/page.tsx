@@ -94,10 +94,6 @@ export default async function EmployeeDetailPage({
             submitLabel="Save HR profile changes"
             defaultValues={{
               employeeId,
-              actorUserId: "hr-user",
-              targetUserId: employeeId,
-              legalFirstName: employee?.name?.split(" ")[0] ?? "Employee",
-              legalLastName: employee?.name?.split(" ").slice(1).join(" ") ?? "",
               preferredName: employee?.name ?? `Employee ${employeeId}`,
               phone: "",
               address: employee?.location ?? "",

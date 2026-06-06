@@ -4,10 +4,6 @@ import { ProfileForm } from "../../../../features/employees/components/profile-f
 
 const scaffoldEmployeeProfile = {
   employeeId: "employee-self",
-  actorUserId: "employee-self",
-  targetUserId: "employee-self",
-  legalFirstName: "Big",
-  legalLastName: "Boss",
   preferredName: "Big",
   phone: "",
   address: "",

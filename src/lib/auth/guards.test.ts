@@ -7,10 +7,35 @@ vi.mock("next/navigation", () => ({
 }));
 
 import { requireAllowedRoles, requireCurrentRole } from "./guards";
+import type { MockRoleSession } from "./session";
+
+const mockSessionByRole: Record<MockRoleSession["role"], MockRoleSession> = {
+  hr: {
+    role: "hr",
+    userId: "hr-user",
+    employeeId: "hr-staff",
+    legalFirstName: "HR",
+    legalLastName: "Admin",
+  },
+  management: {
+    role: "management",
+    userId: "management-user",
+    employeeId: "management-staff",
+    legalFirstName: "Management",
+    legalLastName: "Lead",
+  },
+  employee: {
+    role: "employee",
+    userId: "employee-self",
+    employeeId: "employee-self",
+    legalFirstName: "Big",
+    legalLastName: "Boss",
+  },
+};
 
 describe("auth guards", () => {
   it("returns the current role when a scaffold session exists", () => {
-    expect(requireCurrentRole({ role: "hr" })).toBe("hr");
+    expect(requireCurrentRole(mockSessionByRole.hr)).toBe("hr");
   });
 
   it("redirects unauthenticated access to unauthorized", () => {
@@ -20,10 +45,10 @@ describe("auth guards", () => {
   });
 
   it("allows only configured roles", () => {
-    expect(requireAllowedRoles({ role: "management" }, ["management"])).toBe(
+    expect(requireAllowedRoles(mockSessionByRole.management, ["management"])).toBe(
       "management",
     );
-    expect(() => requireAllowedRoles({ role: "employee" }, ["hr"])).toThrow(
+    expect(() => requireAllowedRoles(mockSessionByRole.employee, ["hr"])).toThrow(
       "REDIRECT:/unauthorized",
     );
   });

@@ -2,23 +2,17 @@
 
 import { cookies } from "next/headers";
 import { z } from "zod";
-import {
-  canEditAnyEmployeeProfile,
-  canEditOwnEmployeeProfile,
-} from "../permissions";
+import { canEditOwnEmployeeProfile } from "../permissions";
 import { mapEmployeeToPublicProfile } from "../mappers";
 import {
-  getSessionRoleFromCookieValue,
+  getMockRoleSessionFromCookieValue,
   MOCK_ROLE_SESSION_COOKIE,
+  type MockRoleSession,
 } from "../../../lib/auth/session";
 import type { EmployeeActionResult } from "./create-employee";
 
 const selfProfileUpdateSchema = z.object({
   employeeId: z.string().min(1),
-  actorUserId: z.string().min(1),
-  targetUserId: z.string().min(1),
-  legalFirstName: z.string().min(1),
-  legalLastName: z.string().min(1),
   preferredName: z.string().min(1),
   phone: z.string().trim(),
   address: z.string().trim(),
@@ -49,15 +43,11 @@ export type UpdateMyProfileResult = EmployeeActionResult & {
   publicProfile?: ReturnType<typeof mapEmployeeToPublicProfile>;
 };
 
-export async function updateMyProfile(
+export async function updateMyProfileWithSession(
+  session: MockRoleSession | null,
   formData: FormData,
 ): Promise<UpdateMyProfileResult> {
-  const cookieStore = await cookies();
-  const role = getSessionRoleFromCookieValue(
-    cookieStore.get(MOCK_ROLE_SESSION_COOKIE)?.value,
-  );
-
-  if (!role) {
+  if (!session) {
     return {
       success: false,
       message: "You must be signed in to update a profile.",
@@ -66,10 +56,6 @@ export async function updateMyProfile(
 
   const result = selfProfileUpdateSchema.safeParse({
     employeeId: getStringValue(formData, "employeeId"),
-    actorUserId: getStringValue(formData, "actorUserId"),
-    targetUserId: getStringValue(formData, "targetUserId"),
-    legalFirstName: getStringValue(formData, "legalFirstName"),
-    legalLastName: getStringValue(formData, "legalLastName"),
     preferredName: getStringValue(formData, "preferredName"),
     phone: getStringValue(formData, "phone"),
     address: getStringValue(formData, "address"),
@@ -89,11 +75,11 @@ export async function updateMyProfile(
   }
 
   const canEditProfile =
-    canEditAnyEmployeeProfile(role) ||
+    session.employeeId !== null &&
     canEditOwnEmployeeProfile(
-      role,
-      result.data.actorUserId,
-      result.data.targetUserId,
+      session.role,
+      session.employeeId,
+      result.data.employeeId,
     );
 
   if (!canEditProfile) {
@@ -109,8 +95,8 @@ export async function updateMyProfile(
     publicProfile: mapEmployeeToPublicProfile({
       employee: {
         id: result.data.employeeId,
-        legalFirstName: result.data.legalFirstName,
-        legalLastName: result.data.legalLastName,
+        legalFirstName: session.legalFirstName,
+        legalLastName: session.legalLastName,
         preferredName: result.data.preferredName,
         phone: getNullableStringValue(formData, "phone"),
         bio: getNullableStringValue(formData, "bio"),
@@ -124,4 +110,15 @@ export async function updateMyProfile(
       },
     }),
   };
+}
+
+export async function updateMyProfile(
+  formData: FormData,
+): Promise<UpdateMyProfileResult> {
+  const cookieStore = await cookies();
+  const session = getMockRoleSessionFromCookieValue(
+    cookieStore.get(MOCK_ROLE_SESSION_COOKIE)?.value,
+  );
+
+  return updateMyProfileWithSession(session, formData);
 }

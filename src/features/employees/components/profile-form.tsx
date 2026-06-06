@@ -6,10 +6,6 @@ export type ProfileFormAction = (
 
 type ProfileFormValues = {
   employeeId: string;
-  actorUserId: string;
-  targetUserId: string;
-  legalFirstName: string;
-  legalLastName: string;
   preferredName: string;
   phone: string;
   address: string;
@@ -40,26 +36,6 @@ export function ProfileForm({
         type="hidden"
         name="employeeId"
         defaultValue={defaultValues?.employeeId ?? ""}
-      />
-      <input
-        type="hidden"
-        name="actorUserId"
-        defaultValue={defaultValues?.actorUserId ?? ""}
-      />
-      <input
-        type="hidden"
-        name="targetUserId"
-        defaultValue={defaultValues?.targetUserId ?? ""}
-      />
-      <input
-        type="hidden"
-        name="legalFirstName"
-        defaultValue={defaultValues?.legalFirstName ?? ""}
-      />
-      <input
-        type="hidden"
-        name="legalLastName"
-        defaultValue={defaultValues?.legalLastName ?? ""}
       />
 
       <div className="grid gap-4 md:grid-cols-2">
