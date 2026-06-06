@@ -1,3 +1,9 @@
+type ProfileFormActionResult = unknown;
+
+export type ProfileFormAction = (
+  formData: FormData,
+) => ProfileFormActionResult | Promise<ProfileFormActionResult>;
+
 type ProfileFormValues = {
   employeeId: string;
   actorUserId: string;
@@ -15,7 +21,7 @@ type ProfileFormValues = {
 };
 
 type ProfileFormProps = {
-  action?: (formData: FormData) => void | Promise<void>;
+  action?: ProfileFormAction;
   defaultValues?: Partial<ProfileFormValues>;
   submitLabel?: string;
 };
@@ -27,7 +33,7 @@ export function ProfileForm({
 }: ProfileFormProps) {
   return (
     <form
-      action={action}
+      action={action as never}
       className="grid gap-6 rounded-3xl border border-[--color-border] bg-[--color-panel] p-6"
     >
       <input

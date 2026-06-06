@@ -1,46 +1,34 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { ProfileForm } from "../src/features/employees/components/profile-form";
+import EmployeeProfilePage from "../src/app/(portal)/employee/profile/page";
 
 describe("employee self-service profile scaffold", () => {
-  it("renders editable self-service fields and privacy controls", () => {
-    render(
-      React.createElement(ProfileForm, {
-        defaultValues: {
-          employeeId: "emp-1",
-          actorUserId: "user-1",
-          targetUserId: "user-1",
-          legalFirstName: "Big",
-          legalLastName: "Boss",
-          preferredName: "Big",
-          phone: "0812345678",
-          address: "Bangkok",
-          emergencyContactName: "Mom",
-          emergencyContactPhone: "0800000000",
-          bio: "Leader",
-          phoneVisible: false,
-          bioVisible: true,
-        },
-      }),
-    );
+  it("renders the employee self-service profile page with mounted profile form", async () => {
+    render(await EmployeeProfilePage());
 
+    expect(
+      screen.getByRole("heading", { name: "My Profile" }),
+    ).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Preferred name")).toHaveValue("Big");
-    expect(screen.getByPlaceholderText("Phone")).toHaveValue("0812345678");
-    expect(screen.getByPlaceholderText("Address")).toHaveValue("Bangkok");
+    expect(screen.getByPlaceholderText("Phone")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Address")).toHaveValue("");
     expect(screen.getByPlaceholderText("Emergency contact name")).toHaveValue(
-      "Mom",
+      "",
     );
     expect(screen.getByPlaceholderText("Emergency contact phone")).toHaveValue(
-      "0800000000",
+      "",
     );
-    expect(screen.getByPlaceholderText("Bio")).toHaveValue("Leader");
-    expect(screen.getByLabelText("Show phone in public profile")).not.toBeChecked();
+    expect(screen.getByPlaceholderText("Bio")).toHaveValue("");
+    expect(screen.getByLabelText("Show phone in public profile")).toBeChecked();
     expect(screen.getByLabelText("Show bio in public profile")).toBeChecked();
+    expect(
+      screen.getByRole("button", { name: "Save my profile" }),
+    ).toBeInTheDocument();
   });
 
-  it("lets the user change visibility settings in the scaffold form", () => {
-    render(React.createElement(ProfileForm));
+  it("lets the user change visibility settings from the routed self-service page", async () => {
+    render(await EmployeeProfilePage());
 
     const phoneVisible = screen.getByLabelText("Show phone in public profile");
     const bioVisible = screen.getByLabelText("Show bio in public profile");

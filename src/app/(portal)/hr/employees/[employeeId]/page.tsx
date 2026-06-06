@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { PageHeader } from "../../../../../components/layout/page-header";
+import { updateEmployee } from "../../../../../features/employees/actions/update-employee";
+import { ProfileForm } from "../../../../../features/employees/components/profile-form";
 import { getEmployeeById } from "../../../../../features/employees/queries";
 
 type EmployeeDetailPageProps = {
@@ -87,11 +89,25 @@ export default async function EmployeeDetailPage({
         </DetailCard>
 
         <DetailCard title="HR actions queue">
-          <ul className="space-y-3 text-sm text-stone-600">
-            <li>Verify employee record completeness before enabling edits.</li>
-            <li>Connect leave, payroll, and document modules in later tasks.</li>
-            <li>Define role-based actions once management workflows exist.</li>
-          </ul>
+          <ProfileForm
+            action={updateEmployee}
+            submitLabel="Save HR profile changes"
+            defaultValues={{
+              employeeId,
+              actorUserId: "hr-user",
+              targetUserId: employeeId,
+              legalFirstName: employee?.name?.split(" ")[0] ?? "Employee",
+              legalLastName: employee?.name?.split(" ").slice(1).join(" ") ?? "",
+              preferredName: employee?.name ?? `Employee ${employeeId}`,
+              phone: "",
+              address: employee?.location ?? "",
+              emergencyContactName: "",
+              emergencyContactPhone: "",
+              bio: "",
+              phoneVisible: false,
+              bioVisible: true,
+            }}
+          />
         </DetailCard>
       </div>
     </section>

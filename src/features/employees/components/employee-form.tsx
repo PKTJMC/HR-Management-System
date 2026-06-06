@@ -1,3 +1,9 @@
+type EmployeeFormActionResult = unknown;
+
+export type EmployeeFormAction = (
+  formData: FormData,
+) => EmployeeFormActionResult | Promise<EmployeeFormActionResult>;
+
 type EmployeeFormValues = {
   employeeCode: string;
   legalFirstName: string;
@@ -17,7 +23,7 @@ type EmployeeFormValues = {
 };
 
 type EmployeeFormProps = {
-  action: (formData: FormData) => void | Promise<void>;
+  action: EmployeeFormAction;
   defaultValues?: Partial<EmployeeFormValues>;
   submitLabel?: string;
 };
@@ -32,7 +38,7 @@ export function EmployeeForm({
 }: EmployeeFormProps) {
   return (
     <form
-      action={action}
+      action={action as never}
       className="grid gap-6 rounded-3xl border border-[--color-border] bg-[--color-panel] p-6"
     >
       <div className="grid gap-4 md:grid-cols-2">
