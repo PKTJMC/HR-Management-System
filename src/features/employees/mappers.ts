@@ -27,6 +27,5 @@ export function mapEmployeeToPublicProfile({ employee, privacy }: MapperInput) {
     preferredName: employee.preferredName,
     phone: privacy.phoneVisible ? employee.phone : null,
     bio: privacy.bioVisible ? employee.bio : null,
-    address: undefined,
   };
 }

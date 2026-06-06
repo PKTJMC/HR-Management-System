@@ -23,6 +23,8 @@ describe("mapEmployeeToPublicProfile", () => {
 
     expect(profile.phone).toBeNull();
     expect(profile.bio).toBe("Leader");
-    expect(profile.address).toBeUndefined();
+    expect("address" in profile).toBe(false);
+    expect("emergencyContactName" in profile).toBe(false);
+    expect("emergencyContactPhone" in profile).toBe(false);
   });
 });
