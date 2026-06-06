@@ -4,7 +4,7 @@ import { getRequiredRoleForPath } from "./lib/auth/guards";
 import { roleHomeMap } from "./lib/auth/roles";
 import { getMockSessionRoleFromRequest } from "./lib/auth/session";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const requiredRole = getRequiredRoleForPath(pathname);
 

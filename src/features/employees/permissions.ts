@@ -1,11 +1,11 @@
 import type { AppRole } from "../../lib/auth/roles";
 
-export function canEditEmployee(role: AppRole) {
+export function canEditAnyEmployeeProfile(role: AppRole) {
   return role === "hr";
 }
 
 export function canViewEmployeeDirectory(role: AppRole) {
-  return role === "hr" || role === "management";
+  return role === "hr" || role === "management" || role === "employee";
 }
 
 export function canViewSensitiveEmployeeFields(role: AppRole) {
@@ -17,10 +17,6 @@ export function canEditOwnEmployeeProfile(
   actorUserId: string,
   targetUserId: string,
 ) {
-  if (role === "hr") {
-    return true;
-  }
-
   if (role !== "employee") {
     return false;
   }

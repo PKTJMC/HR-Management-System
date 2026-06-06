@@ -55,8 +55,3 @@ export function getMockSessionRoleFromRequest(
 ): AppRole | null {
   return getMockRoleSessionFromRequest(request)?.role ?? null;
 }
-
-// Backward-compatible aliases while Task 3 scaffold code is still settling.
-export const SESSION_ROLE_COOKIE = MOCK_ROLE_SESSION_COOKIE;
-export const getSessionFromRequest = getMockRoleSessionFromRequest;
-export const getSessionRoleFromRequest = getMockSessionRoleFromRequest;
