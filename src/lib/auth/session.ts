@@ -1,9 +1,18 @@
 import type { AppRole } from "./roles";
 import { isAppRole } from "./roles";
 
-export const SESSION_ROLE_COOKIE = "hrms-role";
+/**
+ * Temporary scaffold-only cookie for Task 3 routing.
+ *
+ * This is intentionally a mock role session and must not be treated as
+ * production authentication or a trusted authorization source.
+ */
+export const MOCK_ROLE_SESSION_COOKIE = "hrms-role";
 
-export type AppSession = {
+/**
+ * Temporary role session shape used only until real auth is wired in.
+ */
+export type MockRoleSession = {
   role: AppRole;
 };
 
@@ -21,11 +30,17 @@ export function getSessionRoleFromCookieValue(
   return isAppRole(cookieValue) ? cookieValue : null;
 }
 
-export function getSessionFromRequest(
+/**
+ * Reads a mock role session from request cookies for scaffold routing only.
+ *
+ * Do not reuse this as real authentication. The cookie is unsigned and can be
+ * changed by the client, so it is suitable only for temporary local role flows.
+ */
+export function getMockRoleSessionFromRequest(
   request: RequestWithCookies,
-): AppSession | null {
+): MockRoleSession | null {
   const role = getSessionRoleFromCookieValue(
-    request.cookies.get(SESSION_ROLE_COOKIE)?.value,
+    request.cookies.get(MOCK_ROLE_SESSION_COOKIE)?.value,
   );
 
   if (!role) {
@@ -35,8 +50,13 @@ export function getSessionFromRequest(
   return { role };
 }
 
-export function getSessionRoleFromRequest(
+export function getMockSessionRoleFromRequest(
   request: RequestWithCookies,
 ): AppRole | null {
-  return getSessionFromRequest(request)?.role ?? null;
+  return getMockRoleSessionFromRequest(request)?.role ?? null;
 }
+
+// Backward-compatible aliases while Task 3 scaffold code is still settling.
+export const SESSION_ROLE_COOKIE = MOCK_ROLE_SESSION_COOKIE;
+export const getSessionFromRequest = getMockRoleSessionFromRequest;
+export const getSessionRoleFromRequest = getMockSessionRoleFromRequest;

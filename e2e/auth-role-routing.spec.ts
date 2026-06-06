@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { NextRequest } from "next/server";
 import { middleware } from "../src/middleware";
-import { SESSION_ROLE_COOKIE } from "../src/lib/auth/session";
+import { MOCK_ROLE_SESSION_COOKIE } from "../src/lib/auth/session";
 
 function buildRequest(pathname: string, role?: string) {
   const headers = new Headers();
 
   if (role) {
-    headers.set("cookie", `${SESSION_ROLE_COOKIE}=${role}`);
+    headers.set("cookie", `${MOCK_ROLE_SESSION_COOKIE}=${role}`);
   }
 
   return new NextRequest(`http://localhost:3000${pathname}`, { headers });

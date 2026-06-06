@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getRequiredRoleForPath } from "./lib/auth/guards";
 import { roleHomeMap } from "./lib/auth/roles";
-import { getSessionRoleFromRequest } from "./lib/auth/session";
+import { getMockSessionRoleFromRequest } from "./lib/auth/session";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const role = getSessionRoleFromRequest(request);
+  const role = getMockSessionRoleFromRequest(request);
 
   if (!role) {
     return NextResponse.redirect(new URL("/unauthorized", request.url));
