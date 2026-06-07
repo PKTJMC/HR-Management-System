@@ -1,13 +1,22 @@
 import Link from "next/link";
 import type { EmployeeRow } from "../types";
 
-export function EmployeeTable({ rows }: { rows: EmployeeRow[] }) {
+type EmployeeTableProps = {
+  rows: EmployeeRow[];
+  detailHrefBase?: `/${string}`;
+};
+
+export function EmployeeTable({
+  rows,
+  detailHrefBase = "/hr/employees",
+}: EmployeeTableProps) {
   return (
     <div className="overflow-hidden rounded-3xl border border-[--color-border] bg-[--color-panel]">
       <table className="min-w-full text-sm">
         <thead>
           <tr className="border-b border-[--color-border] text-left text-stone-600">
             <th className="px-4 py-3 font-medium">Name</th>
+            <th className="px-4 py-3 font-medium">Employee code</th>
             <th className="px-4 py-3 font-medium">Department</th>
             <th className="px-4 py-3 font-medium">Title</th>
             <th className="px-4 py-3 font-medium">Status</th>
@@ -16,7 +25,7 @@ export function EmployeeTable({ rows }: { rows: EmployeeRow[] }) {
         <tbody>
           {rows.length === 0 ? (
             <tr>
-              <td className="px-4 py-8 text-stone-500" colSpan={4}>
+              <td className="px-4 py-8 text-stone-500" colSpan={5}>
                 No employees found.
               </td>
             </tr>
@@ -28,12 +37,13 @@ export function EmployeeTable({ rows }: { rows: EmployeeRow[] }) {
               >
                 <td className="px-4 py-3 font-medium text-[--color-fg]">
                   <Link
-                    href={`/hr/employees/${row.id}`}
+                    href={`${detailHrefBase}/${row.id}`}
                     className="text-[--color-accent-strong] underline-offset-4 transition hover:underline"
                   >
                     {row.name}
                   </Link>
                 </td>
+                <td className="px-4 py-3 text-stone-700">{row.employeeCode}</td>
                 <td className="px-4 py-3 text-stone-700">{row.department}</td>
                 <td className="px-4 py-3 text-stone-700">{row.title}</td>
                 <td className="px-4 py-3 text-stone-700">{row.status}</td>

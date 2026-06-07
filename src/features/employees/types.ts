@@ -6,6 +6,7 @@ export type EmployeeDirectoryFilters = {
 
 export type EmployeeRow = {
   id: string;
+  employeeCode: string;
   name: string;
   department: string;
   title: string;
@@ -13,8 +14,13 @@ export type EmployeeRow = {
 };
 
 export type EmployeeDetail = EmployeeRow & {
+  legalName: string;
+  preferredName: string;
   email: string;
   location: string;
   manager: string;
   startDate: string;
+  employmentType: string;
+  bio: string | null;
+  isBioPublic: boolean;
 };
