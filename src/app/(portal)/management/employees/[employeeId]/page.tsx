@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { AppShell } from "../../../../../components/layout/app-shell";
 import { PageHeader } from "../../../../../components/layout/page-header";
+import { mapEmployeeDetailForManagement } from "../../../../../features/employees/management-view";
 import { getEmployeeById } from "../../../../../features/employees/queries";
 
 type ManagementEmployeeDetailPageProps = {
@@ -52,7 +53,9 @@ export default async function ManagementEmployeeDetailPage({
   params,
 }: ManagementEmployeeDetailPageProps) {
   const { employeeId } = await params;
-  const employee = await getEmployeeById(employeeId);
+  const employee = mapEmployeeDetailForManagement(
+    await getEmployeeById(employeeId),
+  );
 
   const publicBio =
     employee?.isBioPublic && employee.bio ? employee.bio : "No public bio shared.";

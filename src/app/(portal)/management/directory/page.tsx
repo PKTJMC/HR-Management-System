@@ -2,6 +2,7 @@ import { AppShell } from "../../../../components/layout/app-shell";
 import { PageHeader } from "../../../../components/layout/page-header";
 import { EmployeeFilters } from "../../../../features/employees/components/employee-filters";
 import { EmployeeTable } from "../../../../features/employees/components/employee-table";
+import { mapEmployeeRowForManagement } from "../../../../features/employees/management-view";
 import { listEmployees } from "../../../../features/employees/queries";
 import type { EmployeeDirectoryFilters } from "../../../../features/employees/types";
 
@@ -11,7 +12,7 @@ export default async function ManagementDirectoryPage() {
     department: "all",
     status: "all",
   };
-  const rows = await listEmployees(filters);
+  const rows = (await listEmployees(filters)).map(mapEmployeeRowForManagement);
 
   return (
     <AppShell roleLabel="Management">
